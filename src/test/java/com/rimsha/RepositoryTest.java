@@ -9,6 +9,7 @@ import com.rimsha.model.db.repository.RoomRepository;
 import com.rimsha.model.db.repository.UserRepository;
 import com.rimsha.model.enums.RoomType;
 import com.rimsha.model.enums.ServiceType;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,7 +31,7 @@ public class RepositoryTest extends DbTest {
     void bookingTest() {
         User userTest = createUser();
 
-        assertNotNull(userTest.getId());
+        Assertions.assertNotNull(userTest.getId());
 
         Room room = createRoom();
         Service cleaning = createService(ServiceType.CLEANING, 0.0);
@@ -46,7 +47,7 @@ public class RepositoryTest extends DbTest {
         reservation.setDateEnd(LocalDate.of(2024, 11,5));
 
         Booking bookingTest = bookingRepository.save(reservation);
-        assertNotNull(bookingTest.getId());
+        Assertions.assertNotNull(bookingTest.getId());
 
     }
 

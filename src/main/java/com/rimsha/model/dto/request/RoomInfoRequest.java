@@ -1,9 +1,7 @@
 package com.rimsha.model.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.rimsha.model.enums.RoomStatus;
 import com.rimsha.model.enums.RoomType;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

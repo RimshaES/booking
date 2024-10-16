@@ -6,7 +6,6 @@ import com.rimsha.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 import static com.rimsha.constants.Constants.USERS;
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 //@Tag(name = "Пользователи")
 @RestController

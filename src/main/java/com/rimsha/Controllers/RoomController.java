@@ -1,10 +1,7 @@
 package com.rimsha.Controllers;
 
-import com.rimsha.model.db.repository.RoomRepository;
 import com.rimsha.model.dto.request.RoomInfoRequest;
-import com.rimsha.model.dto.request.UserInfoRequest;
 import com.rimsha.model.dto.response.RoomInfoResponse;
-import com.rimsha.model.dto.response.UserInfoResponse;
 import com.rimsha.service.RoomService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -23,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 import static com.rimsha.constants.Constants.ROOMS;
-import static com.rimsha.constants.Constants.USERS;
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 //@Tag(name = "Пользователи")
 @RestController

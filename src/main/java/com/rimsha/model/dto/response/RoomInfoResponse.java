@@ -2,7 +2,6 @@ package com.rimsha.model.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.rimsha.model.dto.request.RoomInfoRequest;
-import com.rimsha.model.enums.RoomStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
