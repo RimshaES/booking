@@ -43,8 +43,8 @@ public class RepositoryTest extends DbTest {
         Booking reservation = new Booking();
         reservation.setRoom(room);
         reservation.setServices(services);
-        reservation.setDateStart(LocalDate.of(2024, 11,1));
-        reservation.setDateEnd(LocalDate.of(2024, 11,5));
+//        reservation.setDateStart(LocalDate.of(2024, 11,1));
+//        reservation.setDateEnd(LocalDate.of(2024, 11,5));
 
         Booking bookingTest = bookingRepository.save(reservation);
         Assertions.assertNotNull(bookingTest.getId());

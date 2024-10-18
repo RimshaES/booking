@@ -1,10 +1,6 @@
-package com.rimsha.model.dto.response;
+package com.rimsha.model.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.rimsha.model.dto.request.UserInfoRequest;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,11 +18,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserInfoResponse {
-    Long id;
-    String email;
-    String firstName;
-    String lastName;
-    LocalDate dateOfBirth;
-    Long phoneNumber;
+public class SearchBookingRequest {
+
+    LocalDate checkInDate;
+    LocalDate checkOutDate;
 }

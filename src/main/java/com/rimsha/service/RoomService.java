@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class RoomService {
+
     private final ObjectMapper mapper;
     private final RoomRepository roomRepository;
 

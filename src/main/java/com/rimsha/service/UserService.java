@@ -1,6 +1,7 @@
 package com.rimsha.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rimsha.exceptions.ValidationException;
 import com.rimsha.model.db.entity.User;
 import com.rimsha.model.db.repository.UserRepository;
 import com.rimsha.model.dto.request.UserInfoRequest;
@@ -8,6 +9,8 @@ import com.rimsha.model.dto.response.UserInfoResponse;
 import com.rimsha.model.enums.UserStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,19 +21,28 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
     private final ObjectMapper mapper;
     private final UserRepository userRepository;
-
+    private final PasswordEncoder passwordEncoder;
 
 
     public UserInfoResponse createUser(UserInfoRequest request) {
+
+        userRepository.findByEmailIgnoreCase(request.getEmail())
+                .ifPresent(user -> {
+                    throw new ValidationException(String.format("User with email: %s already exists", request.getEmail()), HttpStatus.BAD_REQUEST);
+                });
+
         User user = mapper.convertValue(request, User.class);
         user.setCreatedAt(LocalDateTime.now());
         user.setStatus(UserStatus.CREATED);
+        String password = passwordEncoder.encode(request.getPassword());
+        user.setPassword(password);
         User savedUser = userRepository.save(user);
         return mapper.convertValue(savedUser, UserInfoResponse.class);
-
     }
+
 
     private User getUserFromDB(Long id) {
         return userRepository.findById(id).orElseThrow();

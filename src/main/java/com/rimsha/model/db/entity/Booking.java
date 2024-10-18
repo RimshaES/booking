@@ -31,13 +31,16 @@ public class Booking {
     Long id;
 
     @Column(name = "date_start")
-    LocalDate dateStart;
+    LocalDate checkInDate;
 
     @Column(name = "date_end")
-    LocalDate dateEnd;
+    LocalDate checkOutDate;
 
     @ManyToOne
     Room room;
+
+    @ManyToOne
+    User user;
 
     @Cascade(value = CascadeType.ALL)
     @OneToMany
