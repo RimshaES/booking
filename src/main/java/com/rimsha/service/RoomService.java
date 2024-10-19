@@ -10,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,7 +70,13 @@ public class RoomService {
     public List<RoomInfoResponse> getAllRooms() {
         return roomRepository.findAll().stream()
                 .map(room -> mapper.convertValue(room, RoomInfoResponse.class))
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    public List<RoomInfoResponse> findAvailableRooms(LocalDate checkInDate, LocalDate checkOutDate) {
+        return roomRepository.findAvailableRooms(checkInDate, checkOutDate)
+                .stream().map(room -> mapper.convertValue(room, RoomInfoResponse.class))
+                .toList();
     }
 
 }

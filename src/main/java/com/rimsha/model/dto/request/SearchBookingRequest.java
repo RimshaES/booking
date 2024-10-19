@@ -20,6 +20,7 @@ import java.time.LocalDate;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SearchBookingRequest {
 
+    Integer roomNumber;
     LocalDate checkInDate;
     LocalDate checkOutDate;
 }
