@@ -1,6 +1,5 @@
 package com.rimsha.Controllers;
 
-import com.rimsha.model.db.entity.Room;
 import com.rimsha.model.dto.request.RoomInfoRequest;
 import com.rimsha.model.dto.response.RoomInfoResponse;
 import com.rimsha.service.RoomService;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 import static com.rimsha.constants.Constants.ROOMS;
@@ -69,8 +67,9 @@ public class RoomController {
 
     @GetMapping("/available")
     public ResponseEntity<List<RoomInfoResponse>> getAvailableRooms(@RequestParam LocalDate checkInDate,
-                                                                    @RequestParam LocalDate checkOutDate) {
-        List<RoomInfoResponse> availableRooms = roomService.findAvailableRooms(checkInDate, checkOutDate);
+                                                                    @RequestParam LocalDate checkOutDate,
+                                                                    @RequestParam Integer personQty) {
+         List<RoomInfoResponse> availableRooms = roomService.findAvailableRooms(checkInDate, checkOutDate, personQty);
         return new ResponseEntity<>(availableRooms, HttpStatus.OK);
     }
 

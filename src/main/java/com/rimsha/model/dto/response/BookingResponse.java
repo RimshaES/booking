@@ -1,4 +1,4 @@
-package com.rimsha.model.dto.request;
+package com.rimsha.model.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
@@ -18,8 +18,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SearchBookingRequest {
+public class BookingResponse {
 
+    String message;
     Integer roomNumber;
     LocalDate checkInDate;
     LocalDate checkOutDate;

@@ -1,6 +1,7 @@
 package com.rimsha.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rimsha.exceptions.RoomsNotFoundException;
 import com.rimsha.model.db.entity.Room;
 import com.rimsha.model.db.repository.RoomRepository;
 import com.rimsha.model.dto.request.RoomInfoRequest;
@@ -8,13 +9,12 @@ import com.rimsha.model.dto.response.RoomInfoResponse;
 import com.rimsha.model.enums.RoomStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -73,10 +73,14 @@ public class RoomService {
                 .toList();
     }
 
-    public List<RoomInfoResponse> findAvailableRooms(LocalDate checkInDate, LocalDate checkOutDate) {
-        return roomRepository.findAvailableRooms(checkInDate, checkOutDate)
+    public List<RoomInfoResponse> findAvailableRooms(LocalDate checkInDate, LocalDate checkOutDate, Integer personQty) {
+
+        List<RoomInfoResponse> list = roomRepository.findAvailableRooms(checkInDate, checkOutDate, personQty)
                 .stream().map(room -> mapper.convertValue(room, RoomInfoResponse.class))
                 .toList();
+        if (list.isEmpty()) {
+            throw new RoomsNotFoundException(String.format("Rooms for dates %s - %s for %d persons not found", checkInDate, checkOutDate, personQty), HttpStatus.NOT_FOUND);
+        }
+        return list;
     }
-
 }
