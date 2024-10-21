@@ -43,9 +43,10 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authorize) -> {
                     authorize.requestMatchers("/api/auth/**").permitAll();
-                    authorize.requestMatchers("/api/users/**").permitAll();
+                    authorize.requestMatchers(HttpMethod.POST,"/api/users").permitAll();
+                    authorize.requestMatchers(HttpMethod.GET,"/api/rooms/**").permitAll();
                     authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-                    authorize.anyRequest().authenticated();
+                    authorize.anyRequest().authenticated(); // Требовать аутентификацию для всех остальных запросов
                 }).httpBasic(Customizer.withDefaults());
 
         http.exceptionHandling( exception -> exception

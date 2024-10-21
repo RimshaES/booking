@@ -73,8 +73,8 @@ public class GlobalExceptionHandler {
                 .body(new ErrorMessage(message));
     }
 
-    @ExceptionHandler(RoomsNotFoundException.class)
-    public ResponseEntity<Object> handleException(RoomsNotFoundException ex, WebRequest request) {
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Object> handleException(EntityNotFoundException ex, WebRequest request) {
         return ResponseEntity.status(404)
                 .body(new ErrorMessage(String.format(ex.getMessage())));
     }

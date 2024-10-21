@@ -1,7 +1,7 @@
 package com.rimsha.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rimsha.exceptions.RoomsNotFoundException;
+import com.rimsha.exceptions.EntityNotFoundException;
 import com.rimsha.exceptions.ValidationException;
 import com.rimsha.model.db.entity.Booking;
 import com.rimsha.model.db.entity.Room;
@@ -41,18 +41,23 @@ public class BookingService {
                         principal.getUsername()), HttpStatus.NOT_FOUND));
 
         Room room = roomRepository.findById(request.getRoomId())
-                .orElseThrow(() -> new RoomsNotFoundException(String.format("Room with %d not found", request.getRoomId()), HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Room with %d not found", request.getRoomId()), HttpStatus.NOT_FOUND));
         // Проверка доступности комнаты на указанные даты
         if (isRoomAvailable(request.getRoomId(), request.getCheckInDate(), request.getCheckOutDate())) {
             Booking booking = new Booking();
             booking.setRoom(room);
             booking.setCheckInDate(request.getCheckInDate());
             booking.setCheckOutDate(request.getCheckOutDate());
+
             booking.setUser(user);
 
             // Сохраняем бронирование
             Booking savedBooking = bookingRepository.save(booking);
-            return mapper.convertValue(savedBooking, BookingResponse.class);
+            BookingResponse bookingResponse = mapper.convertValue(savedBooking, BookingResponse.class);
+            bookingResponse.setMessage("Successfully created booking");
+            bookingResponse.setRoomType(room.getRoomType());
+            bookingResponse.setBookingId(savedBooking.getId());
+            return bookingResponse;
 
         } else {
             throw new ValidationException("Room is not available for the selected dates", HttpStatus.BAD_REQUEST);
@@ -65,4 +70,8 @@ public class BookingService {
         List<Booking> existingBookings = bookingRepository.findBookingsForRoomAndDates(roomId, checkInDate, checkOutDate);
         return existingBookings.isEmpty();
     }
+
+//    public BookingResponse getBooking(Long id) {
+//
+//    }
 }

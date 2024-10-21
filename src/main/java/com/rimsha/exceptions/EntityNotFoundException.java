@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
-public class RoomsNotFoundException extends RuntimeException {
+public class EntityNotFoundException extends RuntimeException {
 
     private final String message;
     private final HttpStatus status;

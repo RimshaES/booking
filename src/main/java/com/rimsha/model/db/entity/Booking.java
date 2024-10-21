@@ -22,7 +22,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "rooms")
+@Table(name = "bookings")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Booking {
 

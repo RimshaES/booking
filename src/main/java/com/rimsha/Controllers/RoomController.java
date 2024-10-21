@@ -4,6 +4,7 @@ import com.rimsha.model.dto.request.RoomInfoRequest;
 import com.rimsha.model.dto.response.RoomInfoResponse;
 import com.rimsha.service.RoomService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ import java.util.List;
 
 import static com.rimsha.constants.Constants.ROOMS;
 
-//@Tag(name = "Пользователи")
+@Tag(name = "Комнаты")
 @RestController
 @RequestMapping(ROOMS)
 @RequiredArgsConstructor
@@ -49,17 +50,19 @@ public class RoomController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Обновить комнату по ID")
+    @PreAuthorize("hasRole('ADMIN')")
     public RoomInfoResponse updateRoom(@PathVariable Long id, @RequestBody RoomInfoRequest request) {
         return roomService.updateRoom(id, request);
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Удалить комнату по ID")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteRoom(@PathVariable Long id) {
         roomService.deleteRoom(id);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     @Operation(summary = "Получить список комнат")
     public List<RoomInfoResponse> getAllRooms() {
         return roomService.getAllRooms();

@@ -4,8 +4,10 @@ import com.rimsha.model.dto.request.UserInfoRequest;
 import com.rimsha.model.dto.response.UserInfoResponse;
 import com.rimsha.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +21,7 @@ import java.util.List;
 
 import static com.rimsha.constants.Constants.USERS;
 
-//@Tag(name = "Пользователи")
+@Tag(name = "Пользователи")
 @RestController
 @RequestMapping(USERS)
 @RequiredArgsConstructor
@@ -53,6 +55,7 @@ public class UserController {
 
     @GetMapping("/all")
     @Operation(summary = "Получить список пользователей")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UserInfoResponse> getAllUsers() {
         return userService.getAllUsers();
     }

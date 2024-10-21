@@ -1,7 +1,7 @@
 package com.rimsha.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rimsha.exceptions.RoomsNotFoundException;
+import com.rimsha.exceptions.EntityNotFoundException;
 import com.rimsha.model.db.entity.Room;
 import com.rimsha.model.db.repository.RoomRepository;
 import com.rimsha.model.dto.request.RoomInfoRequest;
@@ -79,7 +79,7 @@ public class RoomService {
                 .stream().map(room -> mapper.convertValue(room, RoomInfoResponse.class))
                 .toList();
         if (list.isEmpty()) {
-            throw new RoomsNotFoundException(String.format("Rooms for dates %s - %s for %d persons not found", checkInDate, checkOutDate, personQty), HttpStatus.NOT_FOUND);
+            throw new EntityNotFoundException(String.format("Rooms for dates %s - %s for %d persons not found", checkInDate, checkOutDate, personQty), HttpStatus.NOT_FOUND);
         }
         return list;
     }

@@ -1,6 +1,7 @@
 package com.rimsha.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rimsha.exceptions.EntityNotFoundException;
 import com.rimsha.exceptions.ValidationException;
 import com.rimsha.model.db.entity.User;
 import com.rimsha.model.db.repository.UserRepository;
@@ -10,6 +11,9 @@ import com.rimsha.model.enums.UserStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,21 +49,24 @@ public class UserService {
 
 
     private User getUserFromDB(Long id) {
-        return userRepository.findById(id).orElseThrow();
+        return userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format("User with id: %s not found", id), HttpStatus.NOT_FOUND)
+        );
     }
 
     public UserInfoResponse getUser(Long id) {
         User user = getUserFromDB(id);
+        checkIfUserIsPrincipalOrAdmin(user);
         return mapper.convertValue(user, UserInfoResponse.class);
     }
 
     public UserInfoResponse updateUser(Long id, UserInfoRequest request) {
         User user = getUserFromDB(id);
-
+        checkIfUserIsPrincipalOrAdmin(user);
         user.setEmail(request.getEmail());
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setPhoneNumber(request.getPhoneNumber());
         user.setDateOfBirth(request.getDateOfBirth());
 
@@ -71,7 +78,7 @@ public class UserService {
 
     public void deleteUser(Long id) {
         User user = getUserFromDB(id);
-
+        checkIfUserIsPrincipalOrAdmin(user);
         user.setUpdatedAt(LocalDateTime.now());
         user.setStatus(UserStatus.DELETED);
 
@@ -82,6 +89,16 @@ public class UserService {
         return userRepository.findAll().stream()
                 .map(user -> mapper.convertValue(user, UserInfoResponse.class))
                 .collect(Collectors.toList());
+    }
+
+    private void checkIfUserIsPrincipalOrAdmin(User user) {
+        UserDetails principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        boolean isAdmin = principal.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .anyMatch("ADMIN"::equals);
+        if (!principal.getUsername().equals(user.getEmail()) && !isAdmin) {
+            throw new ValidationException(String.format("No permission", user.getEmail()), HttpStatus.UNAUTHORIZED);
+        }
     }
 
 }

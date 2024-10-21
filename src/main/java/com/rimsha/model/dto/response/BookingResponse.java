@@ -1,6 +1,7 @@
 package com.rimsha.model.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.rimsha.model.enums.RoomType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +22,8 @@ import java.time.LocalDate;
 public class BookingResponse {
 
     String message;
-    Integer roomNumber;
+    RoomType roomType;
     LocalDate checkInDate;
     LocalDate checkOutDate;
+    Long bookingId;
 }
