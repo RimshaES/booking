@@ -12,13 +12,14 @@ import com.rimsha.model.enums.ServiceType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
 
-public class RepositoryTest extends DbTest {
+@SpringBootTest
+public class RepositoryTest extends AbstractTest {
 
     @Autowired
     private UserRepository userRepository;

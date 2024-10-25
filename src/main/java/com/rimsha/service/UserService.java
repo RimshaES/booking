@@ -95,7 +95,7 @@ public class UserService {
         UserDetails principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         boolean isAdmin = principal.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .anyMatch("ADMIN"::equals);
+                .anyMatch(role -> role.contains("ADMIN"));
         if (!principal.getUsername().equals(user.getEmail()) && !isAdmin) {
             throw new ValidationException(String.format("No permission", user.getEmail()), HttpStatus.UNAUTHORIZED);
         }

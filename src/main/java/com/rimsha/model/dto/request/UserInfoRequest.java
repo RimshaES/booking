@@ -23,7 +23,7 @@ import java.time.LocalDate;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserInfoRequest {
 
-    @Email
+    @Email //проверяет email на корректность
     String email;
     @NotEmpty
     String password;

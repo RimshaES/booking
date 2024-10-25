@@ -71,7 +71,4 @@ public class BookingService {
         return existingBookings.isEmpty();
     }
 
-//    public BookingResponse getBooking(Long id) {
-//
-//    }
 }

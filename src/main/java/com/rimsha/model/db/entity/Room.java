@@ -1,11 +1,13 @@
 package com.rimsha.model.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rimsha.model.enums.RoomStatus;
 import com.rimsha.model.enums.RoomType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -60,7 +62,8 @@ public class Room {
     @UpdateTimestamp
     LocalDateTime updatedAt;
 
-    @OneToMany
+    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER)
+    @JsonManagedReference
     List<Booking> bookings;
 
 }

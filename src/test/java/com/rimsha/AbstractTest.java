@@ -2,6 +2,7 @@ package com.rimsha;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -11,9 +12,11 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.sql.DataSource;
 
-@SpringBootTest
 @Testcontainers
-public abstract class DbTest {
+@SpringBootTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public abstract class AbstractTest {
+
     // Создание контейнера с PostgreSQL
     @Container
     private static final PostgreSQLContainer<?> postgresContainer =

@@ -7,6 +7,7 @@ import com.rimsha.model.db.repository.RoomRepository;
 import com.rimsha.model.dto.request.RoomInfoRequest;
 import com.rimsha.model.dto.response.RoomInfoResponse;
 import com.rimsha.model.enums.RoomStatus;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -73,10 +74,11 @@ public class RoomService {
                 .toList();
     }
 
+    @Transactional
     public List<RoomInfoResponse> findAvailableRooms(LocalDate checkInDate, LocalDate checkOutDate, Integer personQty) {
 
         List<RoomInfoResponse> list = roomRepository.findAvailableRooms(checkInDate, checkOutDate, personQty)
-                .stream().map(room -> mapper.convertValue(room, RoomInfoResponse.class))
+                .stream().map(room -> mapper. convertValue(room, RoomInfoResponse.class))
                 .toList();
         if (list.isEmpty()) {
             throw new EntityNotFoundException(String.format("Rooms for dates %s - %s for %d persons not found", checkInDate, checkOutDate, personQty), HttpStatus.NOT_FOUND);

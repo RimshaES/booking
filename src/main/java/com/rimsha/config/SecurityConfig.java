@@ -9,6 +9,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Component
 @EnableMethodSecurity
@@ -26,6 +30,15 @@ public class SecurityConfig {
     private JwtAuthenticationEntryPoint authenticationEntryPoint;
 
     private JwtAuthenticationFilter authenticationFilter;
+
+    private static final String[] SWAGGER_ENDPOINT = {
+            "/**swagger**/**",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/v2/api-docs",
+            "/swagger-ui/**",
+            "/v3/api-docs/**"
+    };
 
     @Bean
     public static PasswordEncoder passwordEncoder(){
@@ -38,10 +51,18 @@ public class SecurityConfig {
     }
 
     @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        return source;
+    }
+
+    @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.csrf(csrf -> csrf.disable())
+        http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> {
+                    authorize.requestMatchers(SWAGGER_ENDPOINT).permitAll();
                     authorize.requestMatchers("/api/auth/**").permitAll();
                     authorize.requestMatchers(HttpMethod.POST,"/api/users").permitAll();
                     authorize.requestMatchers(HttpMethod.GET,"/api/rooms/**").permitAll();

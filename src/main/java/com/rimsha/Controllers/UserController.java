@@ -4,6 +4,7 @@ import com.rimsha.model.dto.request.UserInfoRequest;
 import com.rimsha.model.dto.response.UserInfoResponse;
 import com.rimsha.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,24 +38,28 @@ public class UserController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Получить пользователя по ID")
+    @SecurityRequirement(name = "bearerAuth")
     public UserInfoResponse getUser(@PathVariable Long id) {
         return userService.getUser(id);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Обновить пользователя по ID")
+    @SecurityRequirement(name = "bearerAuth")
     public UserInfoResponse updateUser(@PathVariable Long id, @RequestBody UserInfoRequest request) {
         return userService.updateUser(id, request);
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Удалить пользователя по ID")
+    @SecurityRequirement(name = "bearerAuth")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
 
     @GetMapping("/all")
     @Operation(summary = "Получить список пользователей")
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ADMIN')")
     public List<UserInfoResponse> getAllUsers() {
         return userService.getAllUsers();
