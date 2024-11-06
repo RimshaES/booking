@@ -1,4 +1,4 @@
-package com.rimsha.Controllers;
+package com.rimsha.controllers;
 
 import com.rimsha.model.dto.request.UserInfoRequest;
 import com.rimsha.model.dto.response.UserInfoResponse;

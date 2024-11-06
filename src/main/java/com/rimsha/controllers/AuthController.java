@@ -1,12 +1,10 @@
-package com.rimsha.Controllers;
+package com.rimsha.controllers;
 
 import com.rimsha.model.dto.request.LoginDto;
 import com.rimsha.model.dto.response.AuthResponseDto;
 import com.rimsha.service.AuthService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
