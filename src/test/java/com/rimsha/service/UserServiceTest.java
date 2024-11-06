@@ -3,6 +3,7 @@ package com.rimsha.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.rimsha.AbstractTest;
+import com.rimsha.exceptions.EntityNotFoundException;
 import com.rimsha.exceptions.ValidationException;
 import com.rimsha.model.db.entity.User;
 import com.rimsha.model.db.repository.UserRepository;
@@ -20,6 +21,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.LocalDate;
 import java.util.List;
+
 
 public class UserServiceTest extends AbstractTest {
 
@@ -44,7 +46,7 @@ public class UserServiceTest extends AbstractTest {
     }
 
     @Test
-    public void testCreateUser() {
+    public void createUserTest() {
         UserInfoRequest request = createUserRequest("test@test.com");
 
         UserInfoResponse result = userService.createUser(request);
@@ -83,6 +85,20 @@ public class UserServiceTest extends AbstractTest {
         UserInfoResponse result = userService.createUser(request);
         UserInfoResponse user = userService.getUser(result.getId());
         Assertions.assertEquals(request.getEmail(), user.getEmail());
+    }
+
+    @Test
+    @WithMockUser(username = "test7@test.com")
+    public void testGetUser_NotPrincipal() {
+        UserInfoRequest request = createUserRequest("test@test.com");
+        UserInfoResponse result = userService.createUser(request);
+        Assertions.assertThrows(ValidationException.class, () -> userService.getUser(result.getId()));
+    }
+
+    @Test
+    @WithMockUser(username = "test@test.com")
+    public void testGetUser_NotFound() {
+        Assertions.assertThrows(EntityNotFoundException.class, () -> userService.getUser(123L));
     }
 
     @Test

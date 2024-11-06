@@ -92,13 +92,27 @@ public class UserService {
     }
 
     private void checkIfUserIsPrincipalOrAdmin(User user) {
-        UserDetails principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        boolean isAdmin = principal.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .anyMatch(role -> role.contains("ADMIN"));
+        UserDetails principal = getPrincipal();
+        boolean isAdmin = isAdmin(principal);
         if (!principal.getUsername().equals(user.getEmail()) && !isAdmin) {
             throw new ValidationException("No permission for user: " + user.getEmail(), HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    public UserDetails getPrincipal() {
+        return (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+    private boolean isAdmin(UserDetails principal) {
+        return principal.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .anyMatch(role -> role.contains("ADMIN"));
+    }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new ValidationException(String.format("User with email: %s not found",
+                        email), HttpStatus.NOT_FOUND));
     }
 
 }

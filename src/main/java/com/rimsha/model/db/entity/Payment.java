@@ -1,6 +1,6 @@
 package com.rimsha.model.db.entity;
 
-import com.rimsha.model.enums.ServiceType;
+import com.rimsha.model.enums.PaymentStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,22 +14,31 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Entity
-@Table(name = "services")
+@Table(name = "payments")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Service {
+public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "service")
-    @Enumerated(EnumType.STRING)
-    ServiceType serviceType;
+    @Column(nullable = false)
+    BigDecimal amount;
 
-    @Column(name = "coast")
-    Double coast;
+    @Column(nullable = false, length = 3)
+    String currency;
+
+    @Column(nullable = false)
+    LocalDateTime paymentDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    PaymentStatus status;
 
 }

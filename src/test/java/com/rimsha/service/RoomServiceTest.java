@@ -9,7 +9,6 @@ import com.rimsha.model.db.entity.Room;
 import com.rimsha.model.db.repository.BookingRepository;
 import com.rimsha.model.db.repository.RoomRepository;
 import com.rimsha.model.dto.request.RoomInfoRequest;
-import com.rimsha.model.dto.request.UserInfoRequest;
 import com.rimsha.model.dto.response.RoomInfoResponse;
 import com.rimsha.model.enums.RoomStatus;
 import com.rimsha.model.enums.RoomType;
@@ -20,10 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-
-import static org.mockito.Mockito.when;
 
 class RoomServiceTest extends AbstractTest {
 
@@ -140,14 +136,6 @@ class RoomServiceTest extends AbstractTest {
         room.setMaxCapacity(capacity);
         room.setRoomNumber(number);
         return room;
-    }
-
-    Booking createBooking(LocalDate checkInDate, LocalDate checkOutDate, Room room) {
-        Booking b = new Booking();
-        b.setCheckInDate(checkInDate);
-        b.setCheckOutDate(checkOutDate);
-        b.setRoom(room);
-        return b;
     }
 
     RoomInfoRequest createRoomInfoRequest(RoomType roomType, Integer roomNumber, Integer maxCapacity, Double coast, String description) {

@@ -1,5 +1,7 @@
 package com.rimsha;
 
+import com.rimsha.model.db.entity.Booking;
+import com.rimsha.model.db.entity.Room;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -11,6 +13,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import javax.sql.DataSource;
+import java.time.LocalDate;
 
 @Testcontainers
 @SpringBootTest
@@ -41,6 +44,14 @@ public abstract class AbstractTest {
     void testDatabaseConnection() throws Exception {
         // Ваши тесты
         System.out.println("DataSource: " + dataSource.getConnection().getMetaData().getURL());
+    }
+
+    protected Booking createBooking(LocalDate checkInDate, LocalDate checkOutDate, Room room) {
+        Booking b = new Booking();
+        b.setCheckInDate(checkInDate);
+        b.setCheckOutDate(checkOutDate);
+        b.setRoom(room);
+        return b;
     }
 }
 
