@@ -44,7 +44,7 @@ public class BookingService {
 
         Room room = roomRepository.findById(request.getRoomId())
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Room with %d not found", request.getRoomId()), HttpStatus.NOT_FOUND));
-        // Проверка доступности комнаты на указанные даты
+
         if (isRoomAvailable(request.getRoomId(), request.getCheckInDate(), request.getCheckOutDate())) {
             Booking booking = new Booking();
             booking.setRoom(room);
@@ -56,7 +56,7 @@ public class BookingService {
             Payment payment = new Payment();
             payment.setStatus(PaymentStatus.PENDING);
 
-            // Сохраняем бронирование
+
             Booking savedBooking = bookingRepository.save(booking);
             BookingResponse bookingResponse = mapper.convertValue(savedBooking, BookingResponse.class);
             bookingResponse.setMessage("Successfully created booking");
@@ -71,7 +71,6 @@ public class BookingService {
         }
     }
 
-    // Метод для проверки, доступна ли комната на указанные даты
     public boolean isRoomAvailable(Long roomId, LocalDate checkInDate, LocalDate checkOutDate) {
         List<Booking> existingBookings = bookingRepository.findBookingsForRoomAndDates(roomId, checkInDate, checkOutDate);
         return existingBookings.isEmpty();

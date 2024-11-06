@@ -42,7 +42,6 @@ public abstract class AbstractTest {
 
     @Test
     void testDatabaseConnection() throws Exception {
-        // Ваши тесты
         System.out.println("DataSource: " + dataSource.getConnection().getMetaData().getURL());
     }
 

@@ -12,8 +12,6 @@ import java.util.List;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
-//    @Query("SELECT b FROM Booking b WHERE b.room.id = :roomId AND " +
-//            "NOT (b.checkInDate <= :checkOutDate AND b.checkOutDate >= :checkInDate)")
     @Query("SELECT b FROM Booking b WHERE b.room.id = :roomId AND " +
             " (b.checkInDate <= :checkOutDate AND b.checkOutDate >= :checkInDate)")
 

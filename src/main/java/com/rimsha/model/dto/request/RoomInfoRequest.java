@@ -26,7 +26,6 @@ public class RoomInfoRequest {
     Integer roomNumber;
     @NotNull
     Integer maxCapacity;
-       //??????? может not empty??
     Double coast;
     String description;
 }

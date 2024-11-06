@@ -22,10 +22,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class BookingServiceTest extends AbstractTest {
 
     BookingService bookingService;
@@ -60,7 +62,6 @@ public class BookingServiceTest extends AbstractTest {
     @Test
     @WithMockUser(username = "test@test.com")
     void createBookingTest() {
-        User user = createUserForTesting();
 
         Room room = createRoomForTesting();
 

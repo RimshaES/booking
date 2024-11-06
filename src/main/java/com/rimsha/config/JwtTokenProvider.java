@@ -18,7 +18,7 @@ public class JwtTokenProvider {
     @Value("${security.jwt.secret-key}")
     private String jwtSecret;
 
-    private long jwtExpirationDate = 3600000; //1h = 3600s and 3600*1000 = 3600000 milliseconds
+    private long jwtExpirationDate = 3600000;
 
     public String generateToken(Authentication authentication) {
 

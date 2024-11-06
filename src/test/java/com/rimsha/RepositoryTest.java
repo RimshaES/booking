@@ -12,13 +12,13 @@ import com.rimsha.model.enums.ServiceType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.time.LocalDate;
 import java.util.List;
 
 
-@SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class RepositoryTest extends AbstractTest {
 
     @Autowired
@@ -44,8 +44,6 @@ public class RepositoryTest extends AbstractTest {
         Booking reservation = new Booking();
         reservation.setRoom(room);
         reservation.setServices(services);
-//        reservation.setDateStart(LocalDate.of(2024, 11,1));
-//        reservation.setDateEnd(LocalDate.of(2024, 11,5));
 
         Booking bookingTest = bookingRepository.save(reservation);
         Assertions.assertNotNull(bookingTest.getId());
