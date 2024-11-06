@@ -62,7 +62,6 @@ public class BookingService {
         } else {
             throw new ValidationException("Room is not available for the selected dates", HttpStatus.BAD_REQUEST);
         }
-
     }
 
     // Метод для проверки, доступна ли комната на указанные даты
@@ -70,5 +69,21 @@ public class BookingService {
         List<Booking> existingBookings = bookingRepository.findBookingsForRoomAndDates(roomId, checkInDate, checkOutDate);
         return existingBookings.isEmpty();
     }
+
+    private Booking getBookingFromDB(Long id) {
+        return bookingRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format("Booking with id: %s not found", id), HttpStatus.NOT_FOUND)
+        );
+    }
+
+    public BookingResponse getBooking(Long id) {
+        Booking booking = getBookingFromDB(id);
+        return mapper.convertValue(booking, BookingResponse.class);
+    }
+
+//    public BookingResponse updateBooking(Long id, BookingRequest request) {
+//        Booking booking = getBookingFromDB(id);
+//
+//    }
 
 }

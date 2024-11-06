@@ -2,6 +2,7 @@ package com.rimsha.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rimsha.exceptions.EntityNotFoundException;
+import com.rimsha.exceptions.ValidationException;
 import com.rimsha.model.db.entity.Room;
 import com.rimsha.model.db.repository.RoomRepository;
 import com.rimsha.model.dto.request.RoomInfoRequest;
@@ -26,6 +27,12 @@ public class RoomService {
     private final RoomRepository roomRepository;
 
     public RoomInfoResponse createRoom(RoomInfoRequest request) {
+
+        roomRepository.findByRoomNumber(request.getRoomNumber())
+                .ifPresent(room -> {
+                    throw new ValidationException(String.format("Room with roomNumber: %s already exists", request.getRoomNumber()), HttpStatus.BAD_REQUEST);
+                });
+
         Room room = mapper.convertValue(request, Room.class);
         room.setCreatedAt(LocalDateTime.now());
         room.setStatus(RoomStatus.CREATED);

@@ -23,7 +23,8 @@ public abstract class AbstractTest {
             new PostgreSQLContainer<>("postgres:16")  // Укажите нужную версию PostgreSQL
                     .withDatabaseName("testdb")
                     .withUsername("test")
-                    .withPassword("test");
+                    .withPassword("test")
+                    .withReuse(true);
 
     // Настройка динамических свойств для подключения к базе данных в контейнере
     @DynamicPropertySource
